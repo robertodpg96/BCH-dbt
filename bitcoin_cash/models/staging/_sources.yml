@@ -14,8 +14,8 @@ sources:
           Each row represents one transaction with nested inputs and outputs arrays.
         config:
           freshness:
-            warn_after: {count: 24, period: hour}
-            error_after: {count: 48, period: hour}
+            warn_after: { count: 24, period: hour }
+            error_after: { count: 48, period: hour }
           loaded_at_field: block_timestamp
         columns:
           - name: hash
