@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: mart_address_balances
+    description: >
+      Current balance for all Bitcoin Cash addresses over the last 90 days.
+      Balance is calculated as total BCH received (outputs) minus total BCH spent (inputs).
+      Addresses involved in coinbase (block reward) transactions are excluded per
+      business requirements.
+    columns:
+      - name: address
+        description: The Bitcoin Cash address.
+        tests:
+          - not_null
+          - unique
+
+      - name: total_received_satoshis
+        description: Total value of all outputs directed to this address, in satoshis.
+        tests:
+          - not_null
+
+      - name: total_spent_satoshis
+        description: >
+          Total value of all inputs originating from this address, in satoshis.
+          Defaults to 0 if the address has never spent any BCH.
+        tests:
+          - not_null
+
+      - name: balance_satoshis
+        description: >
+          Current balance in satoshis: total_received_satoshis - total_spent_satoshis.
+        tests:
+          - not_null
+
+      - name: balance_bch
+        description: >
+          Current balance in BCH (balance_satoshis / 100,000,000).
+        tests:
+          - not_null

@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: stg_bitcoin_cash__transactions
+    description: >
+      Staging model for Bitcoin Cash transactions. Selects the last 90 days of
+      transactions from the public BigQuery dataset. Each row represents one
+      transaction with its nested inputs and outputs arrays intact.
+    columns:
+      - name: transaction_hash
+        description: The SHA-256 hash that uniquely identifies this transaction.
+        tests:
+          - not_null
+          - unique
+
+      - name: block_hash
+        description: The hash of the block this transaction was included in.
+        tests:
+          - not_null
+
+      - name: block_number
+        description: The height of the block this transaction was included in.
+        tests:
+          - not_null
+
+      - name: block_timestamp
+        description: Timestamp of the block this transaction was included in.
+        tests:
+          - not_null
+
+      - name: block_timestamp_month
+        description: The month of the block timestamp, used for BigQuery partitioning.
+        tests:
+          - not_null
+
+      - name: transaction_size_bytes
+        description: The size of this transaction in bytes.
+
+      - name: virtual_size_bytes
+        description: The virtual size of this transaction in bytes.
+
+      - name: version
+        description: The transaction version number.
+
+      - name: lock_time
+        description: >
+          The earliest time or block height at which this transaction can be
+          added to the blockchain.
+
+      - name: is_coinbase
+        description: >
+          True if this is a coinbase transaction (the first transaction in a block
+          that creates new coins as a block reward for the miner).
+        tests:
+          - not_null
+
+      - name: input_count
+        description: The number of inputs in this transaction.
+
+      - name: output_count
+        description: The number of outputs in this transaction.
+
+      - name: input_value_satoshis
+        description: Total value of all inputs in satoshis.
+
+      - name: output_value_satoshis
+        description: Total value of all outputs in satoshis.
+
+      - name: fee_satoshis
+        description: Transaction fee paid to miners in satoshis (input_value - output_value).
+
+      - name: inputs
+        description: Array of input records referencing previously unspent outputs.
+
+      - name: outputs
+        description: Array of output records defining new unspent outputs.

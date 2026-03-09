@@ -1,0 +1,34 @@
+# dbt
+bitcoin_cash/target/
+bitcoin_cash/dbt_packages/
+bitcoin_cash/logs/
+bitcoin_cash/.user.yml
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Credentials & secrets
+*.json
+!bitcoin_cash/.github/**/*.json
+.env
+.env.*
+service_account*.json
+keyfile*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

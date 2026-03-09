@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: crypto_bitcoin_cash
+    description: >
+      Public BigQuery dataset containing the full Bitcoin Cash blockchain,
+      pre-processed for human-friendly use cases such as auditing and financial analysis.
+    database: bigquery-public-data
+    schema: crypto_bitcoin_cash
+    tables:
+      - name: transactions
+        description: >
+          Every transaction included in the Bitcoin Cash blockchain.
+          Each row represents one transaction with nested inputs and outputs arrays.
+        config:
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}
+          loaded_at_field: block_timestamp
+        columns:
+          - name: hash
+            description: The SHA-256 hash that uniquely identifies this transaction.
+          - name: block_timestamp
+            description: Timestamp of the block this transaction was included in.
+          - name: is_coinbase
+            description: >
+              True if this is a coinbase transaction (the first transaction in a block
+              that creates new coins as a block reward for the miner).
+          - name: inputs
+            description: Array of input records referencing previously unspent outputs.
+          - name: outputs
+            description: Array of output records defining new unspent outputs.
+          - name: input_value
+            description: Total value of all inputs in satoshis.
+          - name: output_value
+            description: Total value of all outputs in satoshis.
+          - name: fee
+            description: Transaction fee paid to miners in satoshis (input_value - output_value).
