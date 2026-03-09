@@ -35,10 +35,10 @@ This project implements a two-layer transformation pipeline:
 
 ```
 astrafy-dbt/
+├── .github/
+│   └── workflows/
+│       └── dbt_ci.yml                  # GitHub Actions CI workflow
 ├── bitcoin_cash/                       # dbt project root
-│   ├── .github/
-│   │   └── workflows/
-│   │       └── dbt_ci.yml              # GitHub Actions CI workflow
 │   ├── macros/
 │   │   └── generate_schema_name.sql    # Overrides default schema naming
 │   ├── models/
@@ -52,7 +52,8 @@ astrafy-dbt/
 │   ├── dbt_project.yml
 │   └── requirements.txt
 ├── .gitignore
-└── README.md
+├── README.md
+└── requirements.txt                    # Root-level Python dependencies
 ```
 
 ---
@@ -266,7 +267,7 @@ dbt run --vars 'lookback_days: 30'
 
 ## CI/CD
 
-A GitHub Actions workflow (`.github/workflows/dbt_ci.yml`) automatically runs on every pull request.
+A GitHub Actions workflow ([`.github/workflows/dbt_ci.yml`](.github/workflows/dbt_ci.yml)) automatically runs on every pull request.
 
 **Trigger:** `pull_request` — on `opened`, `synchronize`, and `reopened` events.
 
