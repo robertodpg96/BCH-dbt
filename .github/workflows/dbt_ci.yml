@@ -32,11 +32,32 @@ jobs:
       - name: Install dbt and dependencies
         run: pip install -r requirements.txt
 
+      - name: Create dbt profiles.yml
+        working-directory: bitcoin_cash
+        run: |
+          cat > profiles.yml << EOF
+          bitcoin_cash:
+            target: ci
+            outputs:
+              ci:
+                type: bigquery
+                method: service-account-json
+                project: "${{ secrets.GCP_PROJECT_ID }}"
+                dataset: bitcoin_cash
+                threads: 4
+                keyfile_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+                timeout_seconds: 300
+                location: "${{ secrets.DBT_BIGQUERY_LOCATION }}"
+          EOF
+
       - name: Parse dbt project
+        working-directory: bitcoin_cash
         run: dbt parse --profiles-dir . --target ci
 
-      - name: Run dbt
+      - name: Run dbt models
+        working-directory: bitcoin_cash
         run: dbt run --profiles-dir . --target ci
 
       - name: Test dbt models
+        working-directory: bitcoin_cash
         run: dbt test --profiles-dir . --target ci
