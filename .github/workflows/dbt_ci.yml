@@ -34,21 +34,21 @@ jobs:
 
       - name: Create dbt profiles.yml
         working-directory: bitcoin_cash
+        env:
+          GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         run: |
-          cat > profiles.yml << EOF
-          bitcoin_cash:
+          echo "bitcoin_cash:
             target: ci
             outputs:
               ci:
                 type: bigquery
                 method: service-account-json
-                project: "${{ secrets.GCP_PROJECT_ID }}"
+                project: '${{ secrets.GCP_PROJECT_ID }}'
                 dataset: bitcoin_cash
                 threads: 4
-                keyfile_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+                keyfile_json: $(echo $GCP_SERVICE_ACCOUNT_KEY | base64 -d)
                 timeout_seconds: 300
-                location: "${{ secrets.DBT_BIGQUERY_LOCATION }}"
-          EOF
+                location: '${{ secrets.DBT_BIGQUERY_LOCATION }}'" > profiles.yml
 
       - name: Parse dbt project
         working-directory: bitcoin_cash
